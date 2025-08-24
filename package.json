@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Serverless functions for RepRocket",
   "private": true,
+  "scripts": {
+    "start": "echo \"Use 'netlify dev' to run this project locally.\"",
+    "build": "echo \"No build step required. Deploy the root directory directly.\" && exit 0"
+  },
   "dependencies": {
     "@google/genai": "^1.13.0"
   },
