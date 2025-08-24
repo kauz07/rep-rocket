@@ -1,0 +1,5 @@
+{
+  "name": "RepRocket",
+  "description": "A modern gym workout planner and tracker with an integrated calorie counter and AI-powered coach. Plan your workouts on a calendar, track your daily progress, visualize your stats, and get workout ideas from an intelligent assistant.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RepRocket | Ultimate Gym & Calorie Tracker</title>
+    <meta name="description" content="Track your workouts, calories, streaks, and progress with the ultimate fitness tracker. From calorie counting to PR logging, photos, and sarcastic motivation — we’ve got it all.">
+    
+    <style>
+      /* Default Light Theme */
+      :root.theme-light-default {
+        --color-primary: #0e7490;
+        --color-primary-dark: #155e75;
+        --color-secondary: #f8fafc;
+        --color-background: #ffffff;
+        --color-text: #1e293b;
+        --color-accent: #f1f5f9;
+        --color-border: #e2e8f0;
+        --color-rest-day-bg: #f1f5f9;
+        --color-secondary-glass: rgba(248, 250, 252, 0.5);
+        --color-border-glass: rgba(226, 232, 240, 0.3);
+        --color-scheme: light;
+      }
+      /* Default Dark Theme (Revamped) */
+      :root.theme-dark-default {
+        --color-primary: #2dd4bf; /* Teal 400 */
+        --color-primary-dark: #14b8a6; /* Teal 500 */
+        --color-secondary: #1f2937; /* Slate 800 */
+        --color-background: #0f172a; /* Slate 900 */
+        --color-text: #f1f5f9; /* Slate 100 */
+        --color-accent: #334155; /* Slate 700 */
+        --color-border: #334155; /* Slate 700 */
+        --color-rest-day-bg: #1f2937;
+        --color-secondary-glass: rgba(31, 41, 55, 0.65);
+        --color-border-glass: rgba(51, 65, 85, 0.5);
+        --color-scheme: dark;
+      }
+      /* Forest Theme */
+      :root.theme-light-forest {
+        --color-primary: #16a34a;
+        --color-primary-dark: #15803d;
+        --color-secondary: #f0fdf4;
+        --color-background: #ffffff;
+        --color-text: #1a2e26;
+        --color-accent: #dcfce7;
+        --color-border: #bbf7d0;
+        --color-rest-day-bg: #f0fdf4;
+        --color-secondary-glass: rgba(240, 253, 244, 0.5);
+        --color-border-glass: rgba(187, 247, 208, 0.3);
+        --color-scheme: light;
+      }
+      :root.theme-dark-forest {
+        --color-primary: #4ade80; /* Green 400 */
+        --color-primary-dark: #22c55e; /* Green 500 */
+        --color-secondary: #18261c;
+        --color-background: #040806;
+        --color-text: #ecfdf5;
+        --color-accent: #172a1e;
+        --color-border: #15803d;
+        --color-rest-day-bg: #111a13;
+        --color-secondary-glass: rgba(24, 38, 28, 0.65);
+        --color-border-glass: rgba(21, 128, 61, 0.5);
+        --color-scheme: dark;
+      }
+      /* Ocean Theme */
+      :root.theme-light-ocean {
+        --color-primary: #2563eb;
+        --color-primary-dark: #1d4ed8;
+        --color-secondary: #eff6ff;
+        --color-background: #ffffff;
+        --color-text: #1e2e4b;
+        --color-accent: #dbeafe;
+        --color-border: #bfdbfe;
+        --color-rest-day-bg: #eff6ff;
+        --color-secondary-glass: rgba(239, 246, 255, 0.5);
+        --color-border-glass: rgba(191, 219, 254, 0.3);
+        --color-scheme: light;
+      }
+      :root.theme-dark-ocean {
+        --color-primary: #60a5fa; /* Blue 400 */
+        --color-primary-dark: #3b82f6; /* Blue 500 */
+        --color-secondary: #172554;
+        --color-background: #0c1433;
+        --color-text: #eff6ff;
+        --color-accent: #1e293b;
+        --color-border: #1e40af;
+        --color-rest-day-bg: #10162a;
+        --color-secondary-glass: rgba(23, 37, 84, 0.65);
+        --color-border-glass: rgba(30, 64, 175, 0.5);
+        --color-scheme: dark;
+      }
+      body {
+        background-color: var(--color-background);
+        background-image:
+            radial-gradient(ellipse at top left, color-mix(in srgb, var(--color-accent) 20%, transparent) 0%, transparent 50%),
+            radial-gradient(ellipse at top right, color-mix(in srgb, var(--color-primary) 15%, transparent) 0%, transparent 40%),
+            radial-gradient(ellipse at bottom left, color-mix(in srgb, var(--color-primary-dark) 10%, transparent) 0%, transparent 60%);
+        background-attachment: fixed;
+      }
+      
+      .glass-card {
+        background-color: var(--color-secondary-glass);
+        border-color: var(--color-border-glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      @keyframes drift-up {
+        0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+        10% { opacity: 0.05; }
+        90% { opacity: 0.05; }
+        100% { transform: translateY(-120vh) rotate(var(--rotation, 720deg)); opacity: 0; }
+      }
+
+      @keyframes drift-left-curve {
+          0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.05; }
+          50% { transform: translate(-10vw, -60vh) rotate(calc(var(--rotation, 360deg) / 2)); }
+          90% { opacity: 0.05; }
+          100% { transform: translate(-5vw, -120vh) rotate(var(--rotation, 360deg)); opacity: 0; }
+      }
+
+      @keyframes drift-right-curve {
+          0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.05; }
+          50% { transform: translate(10vw, -60vh) rotate(calc(var(--rotation, 360deg) / 2)); }
+          90% { opacity: 0.05; }
+          100% { transform: translate(5vw, -120vh) rotate(var(--rotation, 360deg)); opacity: 0; }
+      }
+
+      .background-icons-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .floating-icon {
+        position: absolute;
+        bottom: -150px;
+        color: var(--color-primary);
+        opacity: 0;
+      }
+      
+      /* Custom Number Input Arrows for Theming */
+      html.dark input[type="number"]::-webkit-inner-spin-button {
+        filter: invert(1) brightness(0.8);
+      }
+      /* For Firefox */
+      input[type="number"] {
+        color-scheme: var(--color-scheme);
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: 'var(--color-primary)',
+              'primary-dark': 'var(--color-primary-dark)',
+              secondary: 'var(--color-secondary)',
+              background: 'var(--color-background)',
+              text: 'var(--color-text)',
+              accent: 'var(--color-accent)',
+              border: 'var(--color-border)',
+              'rest-day-bg': 'var(--color-rest-day-bg)',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            keyframes: {
+              'pulse-glow': {
+                '0%, 100%': { boxShadow: '0 0 5px rgba(0, 245, 195, 0.3)' },
+                '50%': { boxShadow: '0 0 20px rgba(0, 245, 195, 0.7)' },
+              },
+              'slide-in': {
+                '0%': { transform: 'translateY(100%)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              'fade-in': {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              'shine': {
+                '0%': { transform: 'translateX(-150%) skewX(-25deg)' },
+                '100%': { transform: 'translateX(250%) skewX(-25deg)' },
+              },
+              'floating': {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-8px)' },
+              },
+              'slide-up-fade-in': {
+                  'from': { opacity: '0', transform: 'translateY(3rem)' },
+                  'to': { opacity: '1', transform: 'translateY(0)' },
+              },
+              'bounce-on-hover': {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-6px)' },
+              }
+            },
+            animation: {
+              'pulse-glow': 'pulse-glow 3s infinite ease-in-out',
+              'slide-in': 'slide-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+              'fade-in': 'fade-in 0.5s ease-out forwards',
+              'shine': 'shine 2.5s infinite linear',
+              'floating': 'floating 3.5s infinite ease-in-out',
+              'slide-up-fade-in': 'slide-up-fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards'
+            }
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/recharts@2/umd/Recharts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.13.0",
+    "recharts": "https://esm.sh/recharts@^3.1.2",
+    "marked": "https://esm.sh/marked@13.0.1",
+    "@netlify/functions": "https://esm.sh/@netlify/functions@^4.2.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="text-text font-sans">
+    <div id="root"></div>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-type="module" src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

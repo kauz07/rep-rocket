@@ -1,0 +1,13 @@
+{
+  "name": "reprocket-netlify-backend",
+  "version": "1.0.0",
+  "description": "Serverless functions for RepRocket",
+  "private": true,
+  "dependencies": {
+    "@google/genai": "^1.13.0"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.6.0",
+    "typescript": "^5.4.5"
+  }
+}
